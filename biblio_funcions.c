@@ -158,27 +158,38 @@ float NormFrobenius( float M[N][N] ){
 int DiagonalDom( float M[N][N] ){
 	int i;
 	int u;
-	float sum = 0;
+	float diag;
 	int res;
-	int dom = 0;
+	int dom = 1;
 	for (i = 0; i < N; i++){
+		float sum = 0;
 		for (u = 0; u < N; u++){
 			sum += fabs(M[i][u]);
 		}
-		sum -= fabs(M[i][i]);
-		if (M[i][i] > sum){
-			dom = 1;
-		}else{
+		diag = fabs(M[i][i]);
+		sum = sum - diag;
+		if (diag < sum){
 			dom = 0;
-			break;
 		}
 	}
-	if (dom > 0){
+	if (dom == 1){
 		res = 1;
 	}else{
 		res = 0;
 	}
 	return res;
+}
+
+
+void Matriu_x_Vector( float M[N][N], float vect[N], float vectres[N] ){
+	int i;
+	int u;
+	for (i = 0; i < N; i++){
+		vectres[i] = 0;
+		for (u = 0; u < N; u++){
+			vectres[i] += M[i][u] * vect[u];
+		}
+	}
 }
 
 
@@ -220,11 +231,16 @@ int main(){
 	PrintVect(V4,0,10);
 	float infi = Infininorm(Mat);
 	printf ("Infininorma: %f \n",infi);
-	float one = Onenorm(Mat);
+	float one = Onenorm(MatDD);
 	printf ("Norma-ú: %f \n",one);
 	float frobenius = NormFrobenius(Mat);
 	printf ("Norma de Frobenius: %f \n",frobenius);
-
+	int diagonal_dom = DiagonalDom(Mat);
+	printf ("Diagonal dominant: %d \n",diagonal_dom);
+	printf ("Matriu x vector:\n");
+	float V5[N];
+	Matriu_x_Vector(Mat,V2,V5);
+	PrintVect(V5,0,10);
 }
 
 
