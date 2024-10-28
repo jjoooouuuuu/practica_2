@@ -99,10 +99,87 @@ void Projection( float vect1[N], float vect2[N], float vectres[N] ){
 	res_scalar = Scalar(vect1,vect2);
 	cof = res_scalar/mag;
 	for (i = 0; i < N; i++){
-		vectres[i] = vect1[i] * cof;
+		vectres[i] = vect2[i] * cof;
 	}
 }
 
+
+float Infininorm( float M[N][N] ){
+	int i;
+	int u;
+	float sum = 0;
+	float res = 0;
+	for (i = 0; i < N; i++){
+		for (u = 0; u < N; u++){
+			sum += fabs(M[i][u]);
+		}
+		if (sum > res){
+			res = sum;
+		}
+		sum = 0;
+	}
+	return res;
+}
+
+
+float Onenorm( float M[N][N] ){
+	int i;
+        int u;
+        float sum = 0;
+        float res = 0;
+        for (u = 0; u < N; u++){
+                for (i = 0; i < N; i++){
+                        sum += fabs(M[i][u]);
+		}
+                if (sum > res){
+                        res = sum;
+                }
+                sum = 0;
+        }
+        return res;
+}
+
+
+float NormFrobenius( float M[N][N] ){
+	int i;
+	int u;
+	float forb = 0;
+	float res;
+	for (i = 0; i < N; i++){
+		for (u = 0; u < N; u++){
+			forb += M[i][u] * M[i][u];
+		}
+	}
+	res = sqrt(forb);
+	return res;
+}
+
+
+int DiagonalDom( float M[N][N] ){
+	int i;
+	int u;
+	float sum = 0;
+	int res;
+	int dom = 0;
+	for (i = 0; i < N; i++){
+		for (u = 0; u < N; u++){
+			sum += fabs(M[i][u]);
+		}
+		sum -= fabs(M[i][i]);
+		if (M[i][i] > sum){
+			dom = 1;
+		}else{
+			dom = 0;
+			break;
+		}
+	}
+	if (dom > 0){
+		res = 1;
+	}else{
+		res = 0;
+	}
+	return res;
+}
 
 
 int main(){
@@ -131,10 +208,23 @@ int main(){
 	printf("\n");
 	PrintRow(MatDD,0,0,10);
 	PrintRow(MatDD,100,95,10);
+	printf("Multiplicació escalar de dos vectors:");
+	float multscalar = Scalar(V2,V3);
+	printf(" %f \n",multscalar);
+	printf("Magnitud d'un vector:");
+	float mag = Magnitude(V2);
+	printf(" %f \n",mag);
 	printf("Projecció:");
 	float V4[N];
-	Projection(V1,V2,V4);
+	Projection(V2,V3,V4);
 	PrintVect(V4,0,10);
+	float infi = Infininorm(Mat);
+	printf ("Infininorma: %f \n",infi);
+	float one = Onenorm(Mat);
+	printf ("Norma-ú: %f \n",one);
+	float frobenius = NormFrobenius(Mat);
+	printf ("Norma de Frobenius: %f \n",frobenius);
+
 }
 
 
