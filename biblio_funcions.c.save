@@ -193,198 +193,103 @@ void Matriu_x_Vector( float M[N][N], float vect[N], float vectres[N] ){
 }
 
 
-int Jacobi(float M[N][N], float vect[N], float vectres[N], unsigned iter) {
+int Jacobi( float M[N][N] , float vect[N], float vectres[N], unsigned iter ){
 	int dom = DiagonalDom(M);
-	if (dom == 0){ 
-		printf("No es pot aplicar el mètode Jacobi amb aquesta matriu, ja que no és diagonal dominant\n");
+	if (dom == 0){
+		printf("El mètode Jacobi no es pot aplicar ja que la matriu no és diagonal dominant.\n")
 	}else{
-		float x_prev[N];
 		int i;
 		int j;
 		int k;
-			for (int i = 0; i < N; i++) vectres[i] = 0.0;
-			for (unsigned k = 0; k < iter; k++) {
-				for (int i = 0; i < N; i++) x_prev[i] = vectres[i];
-				for (int i = 0; i < N; i++) {
-					float sum = vect[i];
-					for (int j = 0; j < N; j++) {
-						if (j != i) sum -= M[i][j] * x_prev[j];
-					}
-					vectres[i] = sum / M[i][i];
+		float sum = 0;
+		float prev[N];
+		for (k = 0; k < N; i++){
+			vectres[k] = 0.0;
+		}
+		Resoldre sistemes d’equacions lineals. Per a solucionar sistemes
+d’equacions lineals de la forma:
+Fonaments d’Informàtica Operacions amb matrius i vectors en C
+Laboratori II (3 sessions)
+7
+(o Ax = b per simplificar), podem utilitzar, en certes condicions, mètodes
+iteratius com el de Jacobi. Aquets mètodes proposen descompondre la
+matriu A en S – T, transformant el sistema Ax = b en Sx = Tx + b, del qual
+pot derivar-se Sxk+1 = Txk + b sempre que es compleixi:
+• S ha de ser senzilla (diagonal o triangular) i invertible
+• la successió xk ha convergir a la solució
+En particular, el mètode de Jacobi proposa que S sigui la diagonal d’A,
+així:
+Pel que, donada una solució inicial qualsevol, els passos de refinament es
+calculen com:
+El mètode pot aplicar-se un nombre d’iteracions determinat o bé fins que
+la diferència entre dos solucions consecutives estigui per sota d’un cert
+llindar.
+El mètode de Jacobi convergeix si la matriu A és estrictament irreductible
+(diagonal dominant).
+La capçalera d’aquesta funció serà:
+		for (i = 0; i < iter; i++){
+			sum = vect[i];
+			for (j = 0; j < N; j++){
+				if (j != i){
+					sum -= M[i][j];
 				}
 			}
-		PrintVect(vectres,0,10);
-	}
-}
+			vectres[i] = sum / M[i][i];
+		}
+
+
+
+
 
 
 int main(){
-	printf("PRÀCTICA 2: Operacions amb matrius i vectors en C\n");
-
 	InitData();
-
-	printf("\n");
-	printf("A.- Mostres vectors:");
-	printf("\n");
-
+	printf("Mostres vectors:");
 	printf("\n");
 	printf("Vector 1:");
 	printf("\n");
 	PrintVect(V1,0,10);
 	PrintVect(V1,256,10);
-
-	printf("\n");
 	printf("Vector 2:");
 	printf("\n");
 	PrintVect(V2,0,10);
         PrintVect(V2,256,10);
-
-	printf("\n");
 	printf("Vector 3:");
 	printf("\n");
 	PrintVect(V3,0,10);
         PrintVect(V3,256,10);
-
-	printf("\n");
 	printf("Mostres matrius:");
 	printf("\n");
-
-	printf("\n");
-	printf("B.- Matriu Mat:");
+	printf("Matriu Mat:");
 	printf("\n");
 	PrintRow(Mat,0,0,10);
 	PrintRow(Mat,100,0,10);
-
-	printf("\n");
-	printf("C.- Matriu MatDD:");
+	printf("Matriu MatDD:");
 	printf("\n");
 	PrintRow(MatDD,0,0,10);
 	PrintRow(MatDD,100,95,10);
-
-	printf("\n");
-	printf("D.- Propietats de les matrius:\n");
-
-	printf("\n");
-	printf ("Mat:\n");
-	float infi1 = Infininorm(Mat);
-        printf ("Infininorma: %f \n",infi1);
-        float one1 = Onenorm(Mat);
-        printf ("Norma-ú: %f \n",one1);
-        float frobenius1 = NormFrobenius(Mat);
-        printf ("Norma de Frobenius: %f \n",frobenius1);
-        int diagonal_dom1 = DiagonalDom(Mat);
-        printf ("Diagonal dominant: %d \n",diagonal_dom1);
-
-	printf("\n");
-	printf("MatDD:\n");
-	float infi2 = Infininorm(MatDD);
-        printf ("Infininorma: %f \n",infi2);
-        float one2 = Onenorm(MatDD);
-        printf ("Norma-ú: %f \n",one2);
-        float frobenius2 = NormFrobenius(MatDD);
-        printf ("Norma de Frobenius: %f \n",frobenius2);
-        int diagonal_dom2 = DiagonalDom(MatDD);
-        printf ("Diagonal dominant: %d \n",diagonal_dom2);
-
-	printf("\n");
-	printf("E.- Producte escalar de dos vectors:\n");
-
-	printf("\n");
-	printf("V1 · V2: ");
-	float multscalar1 = Scalar(V1,V2);
-        printf(" %f \n",multscalar1);
-
-	printf("\n");
-	printf("V1 · V3: ");
-	float multscalar2 = Scalar(V1,V3);
-        printf(" %f \n",multscalar2);
-
-	printf("\n");
-	printf("V2 · V3: ");
-	float multscalar3 = Scalar(V2,V3);
-	printf(" %f \n",multscalar3);
-
-	printf("\n");
-	printf("F.- Magnitud d'un vector:\n");
-
-	printf("\n");
-	printf("V1:");
-	float mag1 = Magnitude(V1);
-	printf(" %f \n",mag1);
-
-	printf("\n");
-	printf("V2:");
-        float mag2 = Magnitude(V2);
-        printf(" %f \n",mag2);
-
-	printf("\n");
-	printf("V3:");
-        float mag3 = Magnitude(V3);
-        printf(" %f \n",mag3);
-
-	printf("\n");
-	printf("G.- Ortogonals:\n");
-
-	int ort1 = Ortogonal(V1,V2);
-	printf("\n");
-	printf("V1 i V2: %d\n",ort1);
-
-	int ort2 = Ortogonal(V1,V3);
-	printf("\n");
-        printf("V1 i V3: %d\n",ort2);
-
-	int ort3 = Ortogonal(V2,V3);
-	printf("\n");
-        printf("V2 i V3: %d\n",ort3);
-
-	printf("\n");
-	printf("H.- Multiplicació d'un vector per un escalar:\n");
-	float V7[N];
-	MultEscalar(V3,V7,2);
-	PrintVect(V7,0,10);
-	PrintVect(V7,256,10);
-
-	printf("\n");
-	printf("I.- Projecció:\n");
-
-	printf("\n");
-	printf("V2 sobre V3:\n");
+	printf("Multiplicació escalar de dos vectors:");
+	float multscalar = Scalar(V2,V3);
+	printf(" %f \n",multscalar);
+	printf("Magnitud d'un vector:");
+	float mag = Magnitude(V2);
+	printf(" %f \n",mag);
+	printf("Projecció:");
 	float V4[N];
 	Projection(V2,V3,V4);
 	PrintVect(V4,0,10);
-
-	printf("\n");
-	printf("V1 sobre V2:\n");
-        float V8[N];
-        Projection(V1,V2,V8);
-        PrintVect(V8,0,10);
-
-	printf("\n");
-	printf("J.- Multiplicació d'una matriu amb un vector:\n");
-
-	printf("\n");
-	printf("Mat x V2:\n");
+	float infi = Infininorm(Mat);
+	printf ("Infininorma: %f \n",infi);
+	float one = Onenorm(MatDD);
+	printf ("Norma-ú: %f \n",one);
+	float frobenius = NormFrobenius(Mat);
+	printf ("Norma de Frobenius: %f \n",frobenius);
+	int diagonal_dom = DiagonalDom(Mat);
+	printf ("Diagonal dominant: %d \n",diagonal_dom);
+	printf ("Matriu x vector:\n");
 	float V5[N];
 	Matriu_x_Vector(Mat,V2,V5);
 	PrintVect(V5,0,10);
-
-	printf("\n");
-	printf("K.- Resolució sistemes d'equacions:\n");
-
-	printf("\n");
-	float V6[N];
-	printf ("Resolució sistema: MatDD·X = V3 (1 iteració)\n");
-	Jacobi(MatDD,V3,V6,1);
-
-	printf("\n");
-	float V9[N];
-        printf ("Resolució sistema: MatDD·X = V3 (1000 iteracions)\n");
-	Jacobi(MatDD,V3,V9,1000);
-
-	printf("\n");
-	float V10[N];
-        printf ("Resolució sistema: Mat·X = V3 (1000 iteracions)\n");
-	Jacobi(Mat,V3,V10,1);
 }
 
 
