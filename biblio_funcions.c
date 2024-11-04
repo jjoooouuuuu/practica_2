@@ -9,26 +9,27 @@ float V1[N];
 float V2[N];
 float V3[N];
 
+// Funció d'inicialització
 void InitData(){
-int i,j;
-srand(334411);
-for( i = 0; i < N; i++ )
- for( j = 0; j < N; j++ ){
- Mat[i][j]=(((i*j)%3)?-1:1)*(100.0*(rand()/(1.0*RAND_MAX)));
- if ( (abs(i - j) <= 3) && (i != j))
- MatDD[i][j] = (((i*j)%3) ? -1 : 1)*(rand()/(1.0*RAND_MAX));
- else if ( i == j )
- MatDD[i][j]=(((i*j)%3)?-1:1)*(10000.0*(rand()/(1.0*RAND_MAX)));
- else MatDD[i][j] = 0.0;
- }
-for( i = 0; i < N; i++ ){
- V1[i]=(i<N/2)?(((i*j)%3)?-1:1)*(100.0*(rand()/(1.0*RAND_MAX))):0.0;
- V2[i]=(i>=N/2)?(((i*j)%3)?-1:1)*(100.0*(rand()/(1.0*RAND_MAX))):0.0;
- V3[i]=(((i*j)%5)?-1:1)*(100.0*(rand()/(1.0*RAND_MAX)));
-}
+	int i,j;
+	srand(334411);
+	for( i = 0; i < N; i++ )
+	for( j = 0; j < N; j++ ){
+ 		Mat[i][j]=(((i*j)%3)?-1:1)*(100.0*(rand()/(1.0*RAND_MAX)));
+ 		if ( (abs(i - j) <= 3) && (i != j))
+ 		 MatDD[i][j] = (((i*j)%3) ? -1 : 1)*(rand()/(1.0*RAND_MAX));
+ 		else if ( i == j )
+ 		 MatDD[i][j]=(((i*j)%3)?-1:1)*(10000.0*(rand()/(1.0*RAND_MAX)));
+ 		else MatDD[i][j] = 0.0;
+ 	}
+	for( i = 0; i < N; i++ ){
+ 	V1[i]=(i<N/2)?(((i*j)%3)?-1:1)*(100.0*(rand()/(1.0*RAND_MAX))):0.0;
+ 	V2[i]=(i>=N/2)?(((i*j)%3)?-1:1)*(100.0*(rand()/(1.0*RAND_MAX))):0.0;
+ 	V3[i]=(((i*j)%5)?-1:1)*(100.0*(rand()/(1.0*RAND_MAX)));
+	}
 }
 
-
+// 1. Funció per mostrar els elements d'un vector a partir d'una posició 'from'
 void PrintVect( float vect[N], int from, int numel ){
 	int i;
 	for (i = from; i < from + numel; i++) {
@@ -37,7 +38,7 @@ void PrintVect( float vect[N], int from, int numel ){
 	printf("\n");
 }
 
-
+// 2. Funció per mostrar una fila d'una matriu a partir d'una posició 'from'
 void PrintRow( float mat[N][N], int row, int from, int numel ){
 	int i;
 	for (i = from; i < from + numel; i++){
@@ -46,7 +47,7 @@ void PrintRow( float mat[N][N], int row, int from, int numel ){
 	printf("\n");
 }
 
-
+// 3. Multiplicació d'un escalar per un vector
 void MultEscalar( float vect[N], float vectres[N], float alfa ){
 	int i;
 	for (i = 0; i < N; i++){
@@ -54,7 +55,7 @@ void MultEscalar( float vect[N], float vectres[N], float alfa ){
 	}
 }
 
-
+// 4. Producte escalar entre dos vectors
 float Scalar( float vect1[N], float vect2[N] ){
 	int i;
 	float res = 0;
@@ -64,7 +65,7 @@ float Scalar( float vect1[N], float vect2[N] ){
 	return res;
 }
 
-
+// 5. Càlcul de la magnitud d'un vector
 float Magnitude( float vect[N] ){
 	int i;
 	float arrel = 0;
@@ -76,7 +77,7 @@ float Magnitude( float vect[N] ){
 	return res;
 }
 
-
+// 6. Comprova si dos vectors són ortogonals
 int Ortogonal( float vect1[N], float vect2[N] ){
 	float res_scalar = Scalar(vect1,vect2);
 	float res = 0;
@@ -89,7 +90,7 @@ int Ortogonal( float vect1[N], float vect2[N] ){
 	return res;
 }
 
-
+// 7. Càlcul de la projecció d'un vector 'u' sobre un vector 'v'
 void Projection( float vect1[N], float vect2[N], float vectres[N] ){
 	int i;
 	float res_scalar;
@@ -103,7 +104,7 @@ void Projection( float vect1[N], float vect2[N], float vectres[N] ){
 	}
 }
 
-
+// 8. Càlcul de la infini-norma d'una matriu
 float Infininorm( float M[N][N] ){
 	int i;
 	int u;
@@ -121,7 +122,7 @@ float Infininorm( float M[N][N] ){
 	return res;
 }
 
-
+// 9. Càlcul de la norma-ú d'una matriu
 float Onenorm( float M[N][N] ){
 	int i;
         int u;
@@ -139,7 +140,7 @@ float Onenorm( float M[N][N] ){
         return res;
 }
 
-
+// 10. Càlcul de la norma de Frobenius d'una matriu
 float NormFrobenius( float M[N][N] ){
 	int i;
 	int u;
@@ -154,7 +155,7 @@ float NormFrobenius( float M[N][N] ){
 	return res;
 }
 
-
+// 11. Comprova si una matriu és diagonal dominant
 int DiagonalDom( float M[N][N] ){
 	int i;
 	int u;
@@ -180,7 +181,7 @@ int DiagonalDom( float M[N][N] ){
 	return res;
 }
 
-
+// 12. Multiplicació d'una matriu per un vector
 void Matriu_x_Vector( float M[N][N], float vect[N], float vectres[N] ){
 	int i;
 	int u;
@@ -192,7 +193,7 @@ void Matriu_x_Vector( float M[N][N], float vect[N], float vectres[N] ){
 	}
 }
 
-
+// 13. Mètode de Jacobi per resoldre sistemes d'equacions
 int Jacobi(float M[N][N], float vect[N], float vectres[N], unsigned iter) {
 	int dom = DiagonalDom(M);
 	if (dom == 0){ 
@@ -323,7 +324,7 @@ int main(){
         printf(" %f \n",mag3);
 
 	printf("\n");
-	printf("G.- Ortogonals:\n");
+	printf("G.- Ortogonals (1 = SI, 0 = NO):\n");
 
 	int ort1 = Ortogonal(V1,V2);
 	printf("\n");
@@ -386,8 +387,3 @@ int main(){
         printf ("Resolució sistema: Mat·X = V3 (1000 iteracions)\n");
 	Jacobi(Mat,V3,V10,1);
 }
-
-
-
-
-
