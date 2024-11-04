@@ -263,7 +263,7 @@ int main(){
 	PrintRow(MatDD,100,95,10);
 
 	printf("\n");
-	printf("D.- Propietats de les matrius:\n");
+	printf("D.- Propietats de les matrius (1 = SI, 0 = NO):\n");
 
 	printf("\n");
 	printf ("Mat:\n");
@@ -295,12 +295,12 @@ int main(){
 	float multscalar1 = Scalar(V1,V2);
         printf(" %f \n",multscalar1);
 
-	printf("\n");
+
 	printf("V1 · V3: ");
 	float multscalar2 = Scalar(V1,V3);
         printf(" %f \n",multscalar2);
 
-	printf("\n");
+
 	printf("V2 · V3: ");
 	float multscalar3 = Scalar(V2,V3);
 	printf(" %f \n",multscalar3);
@@ -313,12 +313,10 @@ int main(){
 	float mag1 = Magnitude(V1);
 	printf(" %f \n",mag1);
 
-	printf("\n");
 	printf("V2:");
         float mag2 = Magnitude(V2);
         printf(" %f \n",mag2);
 
-	printf("\n");
 	printf("V3:");
         float mag3 = Magnitude(V3);
         printf(" %f \n",mag3);
@@ -326,16 +324,14 @@ int main(){
 	printf("\n");
 	printf("G.- Ortogonals (1 = SI, 0 = NO):\n");
 
-	int ort1 = Ortogonal(V1,V2);
 	printf("\n");
+	int ort1 = Ortogonal(V1,V2);
 	printf("V1 i V2: %d\n",ort1);
 
 	int ort2 = Ortogonal(V1,V3);
-	printf("\n");
         printf("V1 i V3: %d\n",ort2);
 
 	int ort3 = Ortogonal(V2,V3);
-	printf("\n");
         printf("V2 i V3: %d\n",ort3);
 
 	printf("\n");
@@ -384,6 +380,6 @@ int main(){
 
 	printf("\n");
 	float V10[N];
-        printf ("Resolució sistema: Mat·X = V3 (1000 iteracions)\n");
+        printf ("Resolució sistema: Mat·X = V3\n");
 	Jacobi(Mat,V3,V10,1);
 }
