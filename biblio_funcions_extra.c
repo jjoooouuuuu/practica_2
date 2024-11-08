@@ -195,22 +195,20 @@ void Matriu_x_Vector( float M[N][N], float vect[N], float vectres[N] ){
 
 //Càlcul de la precissió del Mètode de Jacobí
 //Funció càlcul de la norma del residu
-float calcular_norma(float residu[N]) {
-    float suma = 0.0;
-    for (int i = 0; i < N; i++) {
-        suma += residu[i] * residu[i];
-    }
+float Norma_Residu(float M[N][N], float vect[N], float x[N], float residu[N]) {
+    	for (int i = 0; i < N; i++) {
+        	residu[i] = vect[i];
+        	for (int j = 0; j < N; j++) {
+            		residu[i] -= M[i][j] * x[j];
+        	}
+    	}
+	float suma = 0.0;
+    	for (int i = 0; i < N; i++) {
+        	suma += residu[i] * residu[i];
+    	}
     return sqrt(suma);
 }
-//Funció càlcul del residu
-void calcular_residu(float M[N][N], float vect[N], float x[N], float residu[N]) {
-    for (int i = 0; i < N; i++) {
-        residu[i] = vect[i];
-        for (int j = 0; j < N; j++) {
-            residu[i] -= M[i][j] * x[j];
-        }
-    }
-}
+
 // 13. Mètode de Jacobi per resoldre sistemes d'equacions
 int Jacobi(float M[N][N], float vect[N], float vectres[N], unsigned iter) {
 	int dom = DiagonalDom(M);
@@ -221,10 +219,10 @@ int Jacobi(float M[N][N], float vect[N], float vectres[N], unsigned iter) {
 		int i;
 		int j;
 		int k;
-			for (int i = 0; i < N; i++) vectres[i] = 0.0;
-			for (unsigned k = 0; k < iter; k++) {
-				for (int i = 0; i < N; i++) x_prev[i] = vectres[i];
-				for (int i = 0; i < N; i++) {
+			for (i = 0; i < N; i++) vectres[i] = 0.0;
+			for (k = 0; k < iter; k++) {
+				for (i = 0; i < N; i++) x_prev[i] = vectres[i];
+				for (i = 0; i < N; i++) {
 					float sum = vect[i];
 					for (int j = 0; j < N; j++) {
 						if (j != i) sum -= M[i][j] * x_prev[j];
@@ -404,14 +402,12 @@ int main(){
 	printf("\n");
 	printf("Precissió del Mètode de Jacobi per la resolució del primer sistema:\n");
 	float residu1[N];
-	calcular_residu(MatDD,V3,V6,residu1);
-	float norm_res1 = calcular_norma(residu1);
+	float norm_res1 = Norma_Residu(MatDD,V3,V6,residu1);
 	printf(" %f \n",norm_res1);
 
 	printf("\n");
         printf("Precissió del Mètode de Jacobi per la resolució del segon sistema:\n");
         float residu2[N];
-        calcular_residu(MatDD,V3,V9,residu2);
-        float norm_res2 = calcular_norma(residu2);
+        float norm_res2 = Norma_Residu(MatDD,V3,V9,residu2);
         printf(" %f \n",norm_res2);
 }
